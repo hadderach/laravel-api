@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\V1;
 
 use App\Http\Requests\Api\V1\BaseTicketRequest;
 
-class UpdateTicketRequest extends BaseTicketRequest
+class ReplaceTicketRequest extends BaseTicketRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,10 @@ class UpdateTicketRequest extends BaseTicketRequest
     {
         $rules = [
 
-            'data.attributes.title' => 'sometimes|string|max:255',
-            'data.attributes.description' => 'sometimes|string|max:255',
-            'data.attributes.status' => 'sometimes|string|in:A,C,H,X',
-            'data.relationships.author.data.id' => 'sometimes|integer',
+            'data.attributes.title' => 'required|string|max:255',
+            'data.attributes.description' => 'required|string|max:255',
+            'data.attributes.status' => 'required|string|in:A,C,H,X',
+            'data.relationships.author.data.id' => 'required|integer',
         ];
 
         if ($this->routeIs('tickets.store')) {
@@ -35,5 +35,13 @@ class UpdateTicketRequest extends BaseTicketRequest
         }
 
         return $rules;
+    }
+
+    public function messages()
+    {
+        return [
+            'data.attributes.status.in' => 'The status option in invalid. Please A, C, H, X.',
+        ];
+
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Resources\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class AuthorResource extends JsonResource
 {
 
     /**
@@ -21,11 +21,15 @@ class UserResource extends JsonResource
             'attributes' => [
                 'name' => $this->name,
                 'email' => $this->email,
-                $this->mergeWhen($request->routeIs('users.*'), [
+                $this->mergeWhen($request->routeIs('authors.*'), [
                     'email_verified_at' => $this->email_verified_at,
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at
                 ]),
+            ],
+            'includes' => TicketResource::collection($this->whenLoaded('tickets')),
+            'links' => [
+                'self' => route('authors.show', ['author' => $this->id]),
             ]
         ];
     }
