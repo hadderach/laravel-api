@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Api\V1\BaseUserRequest;
 
-class UpdateUserRequest extends FormRequest
+class UpdateUserRequest extends BaseUserRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,10 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'data.attributes.name' => 'sometimes|string|max:255',
+            'data.attributes.email' => 'sometimes|email|max:255',
+            'data.attributes.isManager' => 'sometimes|boolean',
+            'data.attributes.password' => 'sometimes|string|max:255',
         ];
     }
 }
